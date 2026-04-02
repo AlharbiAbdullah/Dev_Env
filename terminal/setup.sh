@@ -2,8 +2,6 @@
 # Terminal setup script
 # Works on both macOS and Ubuntu/Debian
 
-set -e
-
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 OS="$(uname -s)"
 
@@ -68,32 +66,7 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
     git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
 
-# --- Fonts ---
-echo "Installing NotoSansM Nerd Font and Cairo..."
-if [ "$OS" = "Darwin" ]; then
-    brew install --cask font-noto-sans-mono-nerd-font
-    brew install --cask font-cairo
-else
-    mkdir -p "$HOME/.local/share/fonts"
-    # Noto Sans Mono Nerd Font
-    if ! fc-list | grep -qi "NotoSansM Nerd"; then
-        curl -fsSL -L -o /tmp/NotoSansMono.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NotoSansMNerdFont.zip" || \
-        curl -fsSL -L -o /tmp/NotoSansMono.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NotoSansMono.zip"
-        unzip -o /tmp/NotoSansMono.zip -d "$HOME/.local/share/fonts/NotoSansMono/"
-        rm /tmp/NotoSansMono.zip
-    fi
-    # Cairo font
-    if ! fc-list | grep -qi "Cairo"; then
-        sudo apt install -y fonts-cairo || {
-            curl -fsSL -o /tmp/Cairo.zip "https://fonts.google.com/download?family=Cairo"
-            unzip -o /tmp/Cairo.zip -d "$HOME/.local/share/fonts/Cairo/"
-            rm /tmp/Cairo.zip
-        }
-    fi
-    fc-cache -fv
-fi
-
-# --- Copy config files ---
+# --- Copy config files (before fonts, so configs always land) ---
 echo ""
 echo "Copying config files..."
 
@@ -110,6 +83,32 @@ echo "  -> ~/.tmux.conf"
 if [ "$OS" = "Darwin" ]; then
     cp "$SCRIPT_DIR/.zprofile" "$HOME/.zprofile"
     echo "  -> ~/.zprofile"
+fi
+
+# --- Fonts ---
+echo ""
+echo "Installing NotoSansM Nerd Font and Cairo..."
+if [ "$OS" = "Darwin" ]; then
+    brew install --cask font-noto-sans-mono-nerd-font || true
+    brew install --cask font-cairo || true
+else
+    sudo apt install -y unzip fontconfig || true
+    mkdir -p "$HOME/.local/share/fonts"
+    # Noto Sans Mono Nerd Font
+    if ! fc-list | grep -qi "NotoSansM Nerd"; then
+        curl -fsSL -L -o /tmp/NotoSansMono.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NotoSansMNerdFont.zip" || \
+        curl -fsSL -L -o /tmp/NotoSansMono.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NotoSansMono.zip" || \
+        echo "WARNING: Could not download Nerd Font. Install manually."
+        if [ -f /tmp/NotoSansMono.zip ]; then
+            unzip -o /tmp/NotoSansMono.zip -d "$HOME/.local/share/fonts/NotoSansMono/"
+            rm /tmp/NotoSansMono.zip
+        fi
+    fi
+    # Cairo font
+    if ! fc-list | grep -qi "Cairo"; then
+        sudo apt install -y fonts-cairo || echo "WARNING: Could not install Cairo font."
+    fi
+    fc-cache -fv
 fi
 
 # --- Set default shell to zsh ---

@@ -1,0 +1,135 @@
+# AeroSpace - Tiling Window Manager for macOS
+# Docs: https://nikitabobko.github.io/AeroSpace/guide
+
+# Required for persistent-workspaces
+config-version = 2
+
+# Keep workspaces alive even when empty (prevents workspace destruction)
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+
+after-login-command = []
+after-startup-command = [
+  'exec-and-forget borders active_color=0xffd3869b inactive_color=0x00000000 width=15.0'
+]
+# Gruvbox Border Colors (copy to after-startup-command):
+# Bright Red:    0xfffb4934
+# Dark Red:      0xffcc241d
+# Bright Green:  0xffb8bb26
+# Dark Green:    0xff98971a
+# Bright Yellow: 0xfffabd2f
+# Dark Yellow:   0xffd79921
+# Bright Blue:   0xff83a598
+# Dark Blue:     0xff458588
+# Bright Purple: 0xffd3869b
+# Dark Purple:   0xffb16286
+# Bright Aqua:   0xff8ec07c
+# Dark Aqua:     0xff689d6a
+# Bright Orange: 0xfffe8019
+# Dark Orange:   0xffd65d0e
+start-at-login = true
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Enable normalization for proper tiling
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Accordion layout padding
+accordion-padding = 30
+
+# Default layout - manual tiling (you control placement)
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'horizontal'
+
+# =============================================================================
+# GAPS
+# =============================================================================
+[gaps]
+inner.horizontal = 5
+inner.vertical = 5
+outer.left = 5
+outer.right = 5
+outer.top = 5
+outer.bottom = 5
+
+# =============================================================================
+# MAIN MODE KEYBINDINGS
+# =============================================================================
+[mode.main.binding]
+
+# -----------------------------------------------------------------------------
+# Workspace Switching (ctrl + number)
+# -----------------------------------------------------------------------------
+ctrl-1 = 'workspace 1'
+ctrl-2 = 'workspace 2'
+ctrl-3 = 'workspace 3'
+ctrl-4 = 'workspace 4'
+ctrl-5 = 'workspace 5'
+ctrl-6 = 'workspace 6'
+ctrl-7 = 'workspace 7'
+ctrl-8 = 'workspace 8'
+ctrl-9 = 'workspace 9'
+ctrl-0 = 'workspace 0'
+
+# -----------------------------------------------------------------------------
+# Move Window to Workspace (ctrl + shift + number)
+# -----------------------------------------------------------------------------
+ctrl-shift-1 = 'move-node-to-workspace 1'
+ctrl-shift-2 = 'move-node-to-workspace 2'
+ctrl-shift-3 = 'move-node-to-workspace 3'
+ctrl-shift-4 = 'move-node-to-workspace 4'
+ctrl-shift-5 = 'move-node-to-workspace 5'
+ctrl-shift-6 = 'move-node-to-workspace 6'
+ctrl-shift-7 = 'move-node-to-workspace 7'
+ctrl-shift-8 = 'move-node-to-workspace 8'
+ctrl-shift-9 = 'move-node-to-workspace 9'
+ctrl-shift-0 = 'move-node-to-workspace 0'
+
+# -----------------------------------------------------------------------------
+# Focus Navigation (ctrl + arrows)
+# -----------------------------------------------------------------------------
+ctrl-left = 'focus left'
+ctrl-right = 'focus right'
+ctrl-up = 'focus up'
+ctrl-down = 'focus down'
+
+# -----------------------------------------------------------------------------
+# Launch Apps / New Window
+# -----------------------------------------------------------------------------
+ctrl-t = 'exec-and-forget open -na WezTerm'
+ctrl-n = 'exec-and-forget osascript -e "tell application \"System Events\" to keystroke \"n\" using command down"'
+
+# -----------------------------------------------------------------------------
+# Close Window (with workspace preservation - fixes macOS race condition)
+# -----------------------------------------------------------------------------
+ctrl-q = '''exec-and-forget current_workspace="$(aerospace list-workspaces --focused)"; \
+aerospace close; \
+aerospace workspace "$current_workspace"'''
+
+# -----------------------------------------------------------------------------
+# Layout Controls
+# -----------------------------------------------------------------------------
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+ctrl-f = 'fullscreen'
+
+# -----------------------------------------------------------------------------
+# Resize
+# -----------------------------------------------------------------------------
+alt-minus = 'resize smart -50'
+alt-equal = 'resize smart +50'
+
+# -----------------------------------------------------------------------------
+# Move/Join Windows (optional - for advanced tiling)
+# -----------------------------------------------------------------------------
+alt-shift-left = 'move left'
+alt-shift-right = 'move right'
+alt-shift-up = 'move up'
+alt-shift-down = 'move down'
+
+# =============================================================================
+# FORCE ALL WINDOWS TO TILE
+# =============================================================================
+[[on-window-detected]]
+run = 'layout tiling'
+

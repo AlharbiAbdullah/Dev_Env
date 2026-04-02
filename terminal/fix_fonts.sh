@@ -5,8 +5,9 @@
 sudo apt install -y fonts-jetbrains-mono fonts-cairo
 fc-cache -fv
 
-# Update WezTerm config to use JetBrains Mono
+# Update WezTerm config to use JetBrains Mono Bold
 sed -i 's/NotoSansM Nerd Font/JetBrains Mono/g' ~/.wezterm.lua
+sed -i 's/family = "JetBrains Mono"/family = "JetBrains Mono", weight = "Bold"/g' ~/.wezterm.lua
 sed -i 's/Apple Color Emoji/Noto Color Emoji/g' ~/.wezterm.lua
 
 echo ""

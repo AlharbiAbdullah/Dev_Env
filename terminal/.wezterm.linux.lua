@@ -11,7 +11,7 @@ config.bidi_direction = "AutoLeftToRight"
 
 -- Font
 config.font = wezterm.font_with_fallback({
-    { family = "JetBrains Mono", harfbuzz_features = { "liga=0" } },
+    { family = "JetBrains Mono", weight = "Bold", harfbuzz_features = { "liga=0" } },
     { family = "Cairo", weight = "Bold" },
     "Noto Color Emoji",
 })

@@ -32,7 +32,7 @@ mkdir -p "$HOME/.config/i3status"
 # --- Copy configs ---
 echo "Copying config files..."
 
-cp "$SCRIPT_DIR/config" "$HOME/.config/i3/config"
+cp "$SCRIPT_DIR/i3_config" "$HOME/.config/i3/config"
 echo "  -> ~/.config/i3/config"
 
 cp "$SCRIPT_DIR/i3status.conf" "$HOME/.config/i3status/config"

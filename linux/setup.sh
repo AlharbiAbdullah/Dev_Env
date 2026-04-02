@@ -57,10 +57,10 @@ fi
 echo ""
 echo "Copying config files..."
 
-cp "$SCRIPT_DIR/.zshrc.linux" "$HOME/.zshrc"
+cp "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
 echo "  -> ~/.zshrc"
 
-cp "$SCRIPT_DIR/.wezterm.linux.lua" "$HOME/.wezterm.lua"
+cp "$SCRIPT_DIR/.wezterm.lua" "$HOME/.wezterm.lua"
 echo "  -> ~/.wezterm.lua"
 
 # --- Fonts ---
